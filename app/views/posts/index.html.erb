@@ -1,0 +1,47 @@
+<p id="notice"><%= notice %></p>
+
+<p>Currently signed in as <b> <%= show_username %> </b></p>
+
+<h1>Posts</h1>
+
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @posts.each do |post| %>
+      <tr>
+        <td><%= post.title %></td>
+        <td><%= post.description %></td>
+        <td><%= link_to 'Show', post %></td>
+        <td> 
+        <% if can? :update, post %>
+          <%= link_to 'Edit', edit_post_path(post)  %>
+        <% else %>
+          <p>u r not admin!</p>
+        <% end %>
+        </td>
+        <td>
+          <% if can? :destroy, post %>
+            <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %>
+          <% else %>
+            <p>u r not admin!</p>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+
+<%= will_paginate @posts, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+
+
+<%= link_to 'New Post', new_post_path %> 
